@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currying</title>
+</head>
+<body>
+    <img
+        src="https://www.google.dk/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+        id="hplogo"
+    />
+
+    <script>
+        function curry(func) {
+            return function curried(...args) {
+            if (args.length >= func.length) {
+                return func.apply(this, args);
+            } else {
+                return function(...args2) {
+                return curried.apply(this, args.concat(args2));
+                }
+            }
+            };
+        }
+
+        const addElListener = (selector, listener, fn) => 
+            document.querySelector(selector).addEventListener(listener, fn);
+        const curry_addElListener = curry(addElListener);
+
+        const hpLogoClick = curry_addElListener('#hplogo')('click');
+        hpLogoClick(() => alert('Hello!'));
+        hpLogoClick(() => console.log('Clicked!'));
+    </script>
+</body>
+</html>
